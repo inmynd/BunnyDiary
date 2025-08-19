@@ -18,7 +18,7 @@ struct HomeView: View {
                 .font(.Bunny40)
             HStack{
                 MainButton(icon: "WriteIcon", title: "세줄감사쓰기") {}
-                MainButton(icon: "ReadIcon", title: "세줄감사읽기") {}
+                MainButton(icon: "ReadIcon", title: "세줄감사") {}
             }
         }
         .padding()

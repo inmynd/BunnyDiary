@@ -9,7 +9,14 @@ import SwiftUI
 
 struct WriteView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack{
+            Image("MainBunny")
+                .resizable()
+                .frame(width: 100, height: 100)
+            Text("오늘의 감사한 일을 작성해주세요!")
+                .font(.Bunny35)
+            
+        }
     }
 }
 
