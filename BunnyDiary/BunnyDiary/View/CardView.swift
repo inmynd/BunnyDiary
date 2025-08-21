@@ -10,7 +10,7 @@ import SwiftData
 
 struct CardView: View {
     let item: ThanksDiary
-    @Environment(\.dismiss) private var dismiss
+    var onGoHome: () -> Void = {}
     //\. dismiss 뷰닫기
     
     var body: some View {
@@ -47,7 +47,7 @@ struct CardView: View {
             .frame(width: 353, height:295, alignment: .leading)
             .background(RoundedRectangle(cornerRadius: 24).fill(Color("BunnyGray")))
             
-            Button(action: { dismiss() }) {
+            Button(action: { onGoHome() }) {
                 Text("홈화면으로 가기")
                     .font(.Bunny30)
                     .foregroundStyle(.bunnyBlack)

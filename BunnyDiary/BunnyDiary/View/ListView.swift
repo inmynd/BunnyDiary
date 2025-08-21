@@ -130,13 +130,6 @@ struct ListView: View {
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: { dismiss() }) {
-                    HStack(spacing: 4) {
-                        Image("Back")
-                    }
-                }
-            }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button { showMonthPicker = true } label: {
                     Image("Picker")
@@ -191,14 +184,14 @@ struct ListView: View {
     }
 }
 // MARK: - 프리뷰
-// ListView의 프리뷰를 위한 구조체입니다.
+// ListView의 프리뷰 구조체
 struct ListView_Previews: PreviewProvider {
     
-    // 1. 모든 데이터 설정과 컨테이너를 이 변수 안에 묶습니다.
+    // 모든 데이터 설정과 컨테이너를 이 변수 안으로
     private static var previewContainer: ModelContainer = {
         let container = try! ModelContainer(for: ThanksDiary.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
         
-        // 2. 뷰를 반환하기 전에, 데이터를 삽입하는 '명령'을 실행합니다.
+        // 뷰를 반환하기 전에, 데이터를 삽입하는 명령 고고
         let sampleDiary1 = ThanksDiary(line1: "오늘의 감사", line2: "내 감사", line3: "내일의 감사", date: .now)
         let sampleDiary2 = ThanksDiary(line1: "어제는 맑음", line2: "오전 운동 완료", line3: "새벽예배 다녀왔다! 배움 완료", date: .now)
         let sampleDiary3 = ThanksDiary(line1: "지난 달의 감사", line2: "너무 좋았어", line3: "덕분에 행복했어", date: Calendar.current.date(byAdding: .month, value: -1, to: .now)!)
@@ -207,13 +200,12 @@ struct ListView_Previews: PreviewProvider {
         container.mainContext.insert(sampleDiary2)
         container.mainContext.insert(sampleDiary3)
         
-        // 3. 그리고 마지막으로 컨테이너를 반환합니다.
+        // 마지막에는 컨테이너 반환
         return container
     }()
     
     static var previews: some View {
-        // 4. `#Preview`에서는 완성된 변수만 사용합니다.
-        // 이제 ViewBuilder는 뷰만 인식하게 되어 오류가 발생하지 않습니다.
+        // #Preview에서는 완성된 변수만 사용
         NavigationStack {
             ListView()
                 .modelContainer(previewContainer)

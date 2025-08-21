@@ -7,11 +7,10 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct SaveView: View {
     @State private var save: Bool = false
     let delay: Double = 0.8
+    var onFinished: () -> Void = {}
 
     var body: some View {
         VStack(spacing: 16) {
@@ -30,6 +29,9 @@ struct SaveView: View {
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
                 withAnimation { save = true }
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay + 0.6) {
+                onFinished()
             }
         }
     }

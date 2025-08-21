@@ -11,6 +11,9 @@ struct SplashView: View {
     // 이미지 전환을 위한 상태 변수
     @State private var showMouth = false
     
+    var duration: TimeInterval = 1.6
+    var onFinished: () -> Void = {}
+    
     var body: some View {
         Image(showMouth ? "SplashBunny" : "EyesBunny")
             .resizable()
@@ -19,9 +22,14 @@ struct SplashView: View {
             .animation(.easeInOut(duration: 0.5), value: showMouth)
             .padding()
             .onAppear {
-                // 타이머 설정: 1초 후에 이미지 변경
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    showMouth = true}
+                // 절반 지점에서 이미지 전환
+                DispatchQueue.main.asyncAfter(deadline: .now() + duration * 0.5) {
+                    withAnimation { showMouth = true }
+                }
+                // 전체 duration 후 라우팅에 알려주기
+                DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
+                    onFinished()
+                }
             }
     }
 }

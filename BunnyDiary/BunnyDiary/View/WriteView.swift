@@ -9,12 +9,12 @@ import SwiftUI
 import SwiftData
 
 struct WriteView: View {
-    @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var context
     @State private var lineOne: String = ""
     @State private var lineTwo: String = ""
     @State private var lineThree: String = ""
-    @State private var showSave = false
+    
+    var onSaved: (ThanksDiary) -> Void = { _ in }
     
     var body: some View {
         VStack{
@@ -30,22 +30,20 @@ struct WriteView: View {
             
             SaveButton(
                 title: "세줄감사 저장하기",
-                isEnabled: .constant(!(lineOne.isEmpty || lineTwo.isEmpty || lineThree.isEmpty))
-            ) {
+                isEnabled: Binding(get: {
+                    !(lineOne.isEmpty || lineTwo.isEmpty || lineThree.isEmpty)
+                }, set: { _ in })            ) {
                 // 아래부터 SwiftData 저장로직
                 let item = ThanksDiary(line1: lineOne, line2: lineTwo, line3: lineThree, date: Date())
                 context.insert(item)
                 do {
                     try context.save()
+                    onSaved(item)
                 } catch {
                     print("Save failed: \(error)")
                 }
-                showSave = true
             }
             .padding(.top)
-        }
-        .sheet(isPresented: $showSave) {
-            SaveView()
         }
     }
 }

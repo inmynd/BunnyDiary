@@ -12,9 +12,9 @@ import SwiftData
 struct BunnyDiaryApp: App {
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            RouterView()
+                .modelContainer(for: ThanksDiary.self)
                 .preferredColorScheme(.light)
         }
-        .modelContainer(for: ThanksDiary.self)
     }
 }
