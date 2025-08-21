@@ -9,24 +9,20 @@ import SwiftData
 
 struct SaveButton: View {
     let title: String
+    @Binding var isEnabled: Bool
     let action: () -> Void
+    //클로저를 만들어서 쓰고 있는 것
     
     var body: some View {
         Button(action: action)
         {
             Text(title)
                 .font(.Bunny30)
-                .foregroundStyle(.bunnyBlack)
+                .foregroundStyle(isEnabled ? Color("BunnyBlack") : Color("BunnyGray"))
         }
         .frame(width: 353, height: 85)
-        .background(Color("BunnyPink"))
+        .background(isEnabled ? Color("BunnyPink") : Color("BunnyGray"))
         .clipShape(.buttonBorder)
-        
-    }
-}
-
-#Preview {
-    SaveButton(title: "세줄감사 저장하기") {
-        
+        .disabled(!isEnabled)
     }
 }
