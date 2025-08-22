@@ -1,8 +1,6 @@
 import SwiftUI
 import SwiftData
 
-/// 앱 내 라우팅 허브
-/// Splash → Home → Write → Save(연출) → Card, + List
 struct RouterView: View {
     @State private var path: [Router] = []
     @State private var showHome = false
@@ -18,14 +16,13 @@ struct RouterView: View {
                         onReadList: { path.append(.list) }
                     )
                 } else {
-                    // SplashView는 duration과 onFinished를 지원(이전에 적용한 변경)
                     SplashView(duration: 1.6) {
                         showHome = true
-                        path.removeAll() // Home을 루트로
+                        path.removeAll() // HomeView를 루트로!!!!
                     }
                 }
             }
-            // 목적지 매핑
+            //MARK: 이제 가보자고
             .navigationDestination(for: Router.self) { route in
                 switch route {
                 case .splash:
@@ -38,28 +35,29 @@ struct RouterView: View {
                     )
 
                 case .write:
-                    // 저장 완료 시 Save로 push, 카드에 넘길 item 보관
                     WriteView { item in
                         justSaved = item
                         path.append(.save)
                     }
+                    // 저장 완료 시 Save로 push, 카드에 넘길 item 보관
                     .navigationBarBackButtonHidden(true)
                     .toolbar { backToolbar }
 
                 case .save:
-                    // SaveView가 자체 딜레이 후 onFinished로 카드로 이동
                     SaveView {
                         if let item = justSaved {
                             path.append(.card(item))
                         }
+                        // SaveView가 onFinished로 CardView로 이동
                     }
                     .navigationBarBackButtonHidden(true)
 
                 case .card(let item):
                     CardView(item: item) {
-                        // 홈 버튼은 항상 루트(Home)로 복귀 → 백버튼 없음
                         path.removeAll()
                     }
+                    // 홈 버튼은 항상 루트(Home)로 복귀하도록 하는 거 path.removeAll
+
                     .navigationBarBackButtonHidden(true)
                     .toolbar { backToolbar }
 
@@ -72,7 +70,7 @@ struct RouterView: View {
         }
     }
 
-    // MARK: - Toolbars (커스텀 백버튼: 아이콘만 커스텀, 동작은 path 유지)
+    // MARK: - 툴바! (커스텀 백버튼: 아이콘만 커스텀하게함)
     private var backToolbar: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
@@ -116,14 +114,14 @@ struct RouterView: View {
 }
 
 #Preview {
-    // 미리보기: 인메모리 SwiftData 컨테이너 연결 (프리뷰에서 버튼 눌러도 안전)
+    // 미리보기: SwiftData 컨테이너 연결
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: ThanksDiary.self, configurations: config)
 
-    // 샘플 데이터(옵션)
-    let ctx = container.mainContext
-    ctx.insert(ThanksDiary(line1: "예시 1", line2: "아침 운동", line3: "커피 한 잔", date: .now))
-    ctx.insert(ThanksDiary(line1: "예시 2", line2: "코드 정리", line3: "독서", date: .now.addingTimeInterval(-86400)))
+    // 샘플 데이터
+    let sample = container.mainContext
+    sample.insert(ThanksDiary(line1: "애플 아카데미", line2: "4기 화이팅", line3: "C5 화이팅", date: .now))
+    sample.insert(ThanksDiary(line1: "날씨가 점점 시원해지고 있당", line2: "신난당", line3: "조아욥!", date: .now))
 
     return RouterView()
         .modelContainer(container)

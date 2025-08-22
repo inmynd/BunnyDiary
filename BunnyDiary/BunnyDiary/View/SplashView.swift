@@ -22,11 +22,11 @@ struct SplashView: View {
             .animation(.easeInOut(duration: 0.5), value: showMouth)
             .padding()
             .onAppear {
-                // 절반 지점에서 이미지 전환
+                // 디스패치큐~
                 DispatchQueue.main.asyncAfter(deadline: .now() + duration * 0.5) {
                     withAnimation { showMouth = true }
                 }
-                // 전체 duration 후 라우팅에 알려주기
+                // 전체 duration 후 라우터에 알ㄹㅕ줘서 넘어가는거임
                 DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
                     onFinished()
                 }

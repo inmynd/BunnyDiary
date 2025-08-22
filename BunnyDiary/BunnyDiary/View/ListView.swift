@@ -9,7 +9,7 @@
 import SwiftUI
 import SwiftData
 
-// MARK: - ListSectionView (감사일기 카드 컴포넌트)
+// MARK: - ListSectionView (감사일기 하나당 보이는 거)
 struct ListSectionView: View {
     let diary: ThanksDiary
     
@@ -105,7 +105,7 @@ struct ListView: View {
                 }
             }
             
-            // UI 분기: if/else가 전체 리스트 영역을 차지해야 함
+            // if/else가 전체 리스트 영역을 차지해야 해서 있는지 없는지 상태값 보이게 하는 것
             if monthDiaries.isEmpty {
                 Spacer()
                 VStack {
@@ -138,13 +138,14 @@ struct ListView: View {
         }
         .sheet(isPresented: $showMonthPicker) {
             VStack(spacing: 12) {
-                Text("월 선택").font(.headline)
+                Text("감사일기 월 선택").font(.Bunny30)
 
                 HStack(spacing: 24) {
                     // Year wheel
                     Picker("년도", selection: $pickerYear) {
-                        ForEach(2018...2032, id: \.self) { year in
+                        ForEach(2018...2025, id: \.self) { year in
                             Text(String(year)).tag(year)
+                                .font(.Bunny30)
                         }
                     }
                     .pickerStyle(.wheel)
@@ -155,6 +156,7 @@ struct ListView: View {
                     Picker("월", selection: $pickerMonth) {
                         ForEach(1...12, id: \.self) { m in
                             Text("\(m)월").tag(m)
+                                .font(.Bunny30)
                         }
                     }
                     .pickerStyle(.wheel)
@@ -172,7 +174,8 @@ struct ListView: View {
                     }
                     showMonthPicker = false
                 }
-                .buttonStyle(.borderedProminent)
+                .font(.Bunny30)
+                .buttonStyle(.plain)
             }
             .padding()
             .presentationDetents([.medium])
@@ -183,29 +186,27 @@ struct ListView: View {
         }
     }
 }
-// MARK: - 프리뷰
-// ListView의 프리뷰 구조체
+// MARK: - Preview
 struct ListView_Previews: PreviewProvider {
     
-    // 모든 데이터 설정과 컨테이너를 이 변수 안으로
+    // 모든 데이터 설정과 컨테이너를 여기로
     private static var previewContainer: ModelContainer = {
         let container = try! ModelContainer(for: ThanksDiary.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
         
-        // 뷰를 반환하기 전에, 데이터를 삽입하는 명령 고고
-        let sampleDiary1 = ThanksDiary(line1: "오늘의 감사", line2: "내 감사", line3: "내일의 감사", date: .now)
-        let sampleDiary2 = ThanksDiary(line1: "어제는 맑음", line2: "오전 운동 완료", line3: "새벽예배 다녀왔다! 배움 완료", date: .now)
-        let sampleDiary3 = ThanksDiary(line1: "지난 달의 감사", line2: "너무 좋았어", line3: "덕분에 행복했어", date: Calendar.current.date(byAdding: .month, value: -1, to: .now)!)
-        
+        // 뷰를 반환하기 전에, 데이터를 삽입하는 명령 !!!!
+        let sampleDiary1 = ThanksDiary(line1: "안녕하세용", line2: "땡스버니 리트라이~", line3: "화이팅팅", date: .now)
+        let sampleDiary2 = ThanksDiary(line1: "날씨 조음", line2: "오운완~", line3: "마싯는 샤인머스켓 케이크와 아빠 생신", date: .now)
+
         container.mainContext.insert(sampleDiary1)
         container.mainContext.insert(sampleDiary2)
-        container.mainContext.insert(sampleDiary3)
+
         
         // 마지막에는 컨테이너 반환
         return container
     }()
     
     static var previews: some View {
-        // #Preview에서는 완성된 변수만 사용
+        // #Preview에서는 완성된 변수만 사용해야된다이이이잉!!!!!!
         NavigationStack {
             ListView()
                 .modelContainer(previewContainer)
