@@ -17,7 +17,7 @@ struct HomeView: View {
     
     
     var body: some View {
-        let hasEntries = !diaries.isEmpty
+        let hasEntries = diaries.contains { Calendar.current.isDateInToday($0.date)}
         let bunnyName = hasEntries ? "StarBunny" : "MainBunny"
         VStack {
             Text(Date().formatted(.dateTime.year().month().day().weekday(.wide).locale(Locale(identifier: "ko_KR"))))
