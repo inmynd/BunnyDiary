@@ -99,9 +99,10 @@
 				};
 			};
 			buildConfigurationList = 02BE4FAB2E532FE400D3AE09 /* Build configuration list for PBXProject "BunnyDiary" */;
-			developmentRegion = en;
+			developmentRegion = ko;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				ko,
 				en,
 				Base,
 			);
